@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:personal_project/Home.dart';
+import 'package:personal_project/expanse/Expanse_home.dart';
 
 
 class Splash extends StatefulWidget {
@@ -18,9 +19,9 @@ class _SplashState extends State<Splash> {
   }
 
   _navigateToHome()async{
-    await Future.delayed(const Duration(milliseconds: 10000));
+    await Future.delayed(const Duration(milliseconds: 5000));
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()
+          context, MaterialPageRoute(builder: (context) => const Expanse()
       ));
     }
 
