@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_project/expanse/Expense_Income.dart';
 
 import '../Home.dart';
 
@@ -11,6 +15,22 @@ class Expanse extends StatefulWidget {
 }
 
 class _ExpanseState extends State<Expanse> {
+  List _items = [];
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/file.json');
+    final data = await json.decode(response);
+    setState(() {
+      _items = data["item"];
+    });
+
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readJson();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +152,7 @@ class _ExpanseState extends State<Expanse> {
                                     onTap: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Home()),
+                                          builder: (context) => Income()),
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
@@ -236,6 +256,58 @@ class _ExpanseState extends State<Expanse> {
                           ),
                         ),
                       ]))),
+              Padding(padding: EdgeInsets.all(12),
+              child: Container(
+                height:200,
+                child:_items.isNotEmpty
+                    ?Flex(
+                    direction: Axis.vertical,
+                    children:[
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _items.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              margin: const EdgeInsets.only(left:10,right:10,top:5,bottom: 5),
+                              child: ListTile(
+                                  isThreeLine: false,
+                                  leading: CircleAvatar(
+                                    radius: 30,
+                                    foregroundImage: NetworkImage(_items[index]["image"]),
+                                  ),
+                                  title: Text(_items[index]["Name"]),
+                                  subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children:[Padding(padding: EdgeInsets.only(top:0),
+                                        child:Text(_items[index]["Artist"]),),
+                                        Padding(padding: EdgeInsets.only(top:0),
+                                          child:Row(
+                                              children:[
+                                                Padding(padding: EdgeInsets.only(top:0),
+                                                    child:Text("Total Tracks   ")
+                                                ),Padding(padding: EdgeInsets.only(top:0),
+                                                    child:Text(_items[index]["Tracks"].toString()))]),)]),
+                                  trailing: Column(
+                                      children:[Padding(padding: EdgeInsets.only(top:5),
+                                        child:Icon(
+                                          Icons.favorite,
+                                        ),),
+                                        Padding(padding: EdgeInsets.only(top:5),
+                                          child:Text(
+                                            _items[index]["Like"].toString(),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black38),
+                                          ),)
+                                      ]),
+
+                              ),
+                            );
+                          },
+                        ),
+                      ), ])
+                    : Container(),
+                  ),),
         ])));
   }
 
