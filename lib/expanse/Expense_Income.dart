@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 class Income extends StatefulWidget {
   const Income({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _IncomeState extends State<Income> {
   late String amount ;
   String remark='';
   String dropdownvalue = '___Select Source___';
-
+  String mode='';
   var items =  ["___Select Source___","Home","Borrow","Awards","Family"];
 
 
@@ -92,6 +93,40 @@ class _IncomeState extends State<Income> {
                         ),
                       ))),
             ),
+            SizedBox(height: 15),
+            Padding(padding: const EdgeInsets.only(left:16,right:16),
+            child:CustomRadioButton(
+              buttonTextStyle: ButtonTextStyle(
+                selectedColor: Colors.white,
+                unSelectedColor: Colors.black,
+                textStyle: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              autoWidth: false,
+              enableButtonWrap: true,
+              wrapAlignment: WrapAlignment.center,
+              unSelectedColor: Colors.transparent,
+              buttonLables: const [
+                "CASH",
+                "BANK",
+              ],
+              buttonValues: const [
+                "Cash",
+                "Bank"
+              ],
+              radioButtonValue: (values) {
+                mode=values.toString();
+              },
+              defaultSelected: "Cash",
+              horizontal: false,
+              //width: 120,
+              // hight: 50,
+              selectedColor: Colors.deepPurpleAccent,
+              padding: 5,
+              enableShape: true,
+            ),
+            ),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 16,right:16,),
@@ -145,10 +180,6 @@ class _IncomeState extends State<Income> {
                 onChanged: (value) => remark = value,
               ),
             ),
-            SizedBox(height: 20),
-            Center(
-                child: Text('Selected date is $_selectedDate',
-                    style: TextStyle(color: Colors.black)))
           ],
         ),
       ),
@@ -162,7 +193,8 @@ class _IncomeState extends State<Income> {
             'Day': id.substring(0,10),
             'Source': dropdownvalue,
             'Amount': amount,
-            'remark':remark,
+            'Remark':remark,
+            'Mode': mode,
             'type':'INCOME',
           });
           Navigator.push(

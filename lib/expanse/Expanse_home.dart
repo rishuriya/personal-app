@@ -35,10 +35,11 @@ class _ExpanseState extends State<Expanse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
           centerTitle: false,
           elevation: 0,
-          backgroundColor: Colors.grey.shade300,
+          backgroundColor: Colors.deepPurple.shade200,
           title: const Text(
             'For You',
             style: TextStyle(
@@ -56,7 +57,7 @@ class _ExpanseState extends State<Expanse> {
                 child: ClipPath(
                   clipper: WaveClipper(), //set our custom wave clipper
                   child: Container(
-                    color: Colors.grey.shade400,
+                    color: Colors.deepPurple.shade400,
                     height: 350,
                   ),
                 ),
@@ -133,10 +134,10 @@ class _ExpanseState extends State<Expanse> {
               child: Container(
                   height: 175,
                   child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(12),
+                          padding: EdgeInsets.all(6),
                           child: SizedBox(
                               width: 175.0,
                               height: 175.0,
@@ -168,7 +169,7 @@ class _ExpanseState extends State<Expanse> {
                                                 child: Center(
                                             child:FaIcon(
                                               FontAwesomeIcons.add,
-                                              color: Colors.blue,
+                                              color: Colors.deepPurpleAccent,
                                               size: 30,
                                             )),),
                                           ],
@@ -229,7 +230,7 @@ class _ExpanseState extends State<Expanse> {
                                                   child: Center(
                                                       child:FaIcon(
                                                         FontAwesomeIcons.subtract,
-                                                        color: Colors.blue,
+                                                        color: Colors.deepPurpleAccent,
                                                         size: 30,
                                                       )),),
                                               ],

@@ -1,4 +1,5 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -19,7 +20,7 @@ class _ExpenditureState extends State<Expenditure> {
   late String amount ;
   String remark='';
   String dropdownvalue = '___Select Sink___';
-
+  String mode='';
   var items =  ["___Select Sink___","Food","Travel","Cloths","Medicine","Miscellaneous"];
 
 
@@ -93,6 +94,40 @@ class _ExpenditureState extends State<Expenditure> {
                       ))),
             ),
             SizedBox(height: 20),
+            Padding(padding: const EdgeInsets.only(left:16,right:16),
+              child:CustomRadioButton(
+                buttonTextStyle: ButtonTextStyle(
+                  selectedColor: Colors.white,
+                  unSelectedColor: Colors.black,
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                autoWidth: false,
+                enableButtonWrap: true,
+                wrapAlignment: WrapAlignment.center,
+                unSelectedColor: Colors.transparent,
+                buttonLables: const [
+                  "CASH",
+                  "UPI",
+                ],
+                buttonValues: const [
+                  "Cash",
+                  "Upi"
+                ],
+                radioButtonValue: (values) {
+                  mode=values.toString();
+                },
+                defaultSelected: "Cash",
+                horizontal: false,
+                //width: 120,
+                // hight: 50,
+                selectedColor: Colors.deepPurpleAccent,
+                padding: 5,
+                enableShape: true,
+              ),
+            ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 16,right:16,),
               child: DropdownButtonFormField<String>(
@@ -145,10 +180,6 @@ class _ExpenditureState extends State<Expenditure> {
                 onChanged: (value) => remark = value,
               ),
             ),
-            SizedBox(height: 20),
-            Center(
-                child: Text('Selected date is $_selectedDate',
-                    style: TextStyle(color: Colors.black)))
           ],
         ),
       ),
@@ -163,14 +194,15 @@ class _ExpenditureState extends State<Expenditure> {
               'Day': id.substring(0, 10),
               'Source': dropdownvalue,
               'Amount': amount,
-              'remark': remark,
+              'Remark': remark,
+              'Mode':mode,
               'type': 'EXPENDITURE',
             });
           }
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Expanse()),
+                builder: (context) => const Expanse()),
           );
           if (kDebugMode) {
             print(databaseReference);
