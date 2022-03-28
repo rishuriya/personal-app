@@ -39,6 +39,8 @@ dependencies:
   calendar_timeline: ^1.0.4
   firebase_core: ^1.13.1
   firebase_analytics: ^9.1.2
+  firebase_database: ^9.0.8
+  cloud_firestore: ^3.1.10
 
 dev_dependencies:
   flutter_test:

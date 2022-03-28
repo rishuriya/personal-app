@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "781619694633",
-    "project_id": "expense-cllg",
-    "storage_bucket": "expense-cllg.appspot.com"
+    "project_number": "797974660593",
+    "project_id": "project-student-8a576",
+    "storage_bucket": "project-student-8a576.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:781619694633:android:a561ea6259f51428bd6038",
+        "mobilesdk_app_id": "1:797974660593:android:e6a1a475a29ddb16853050",
         "android_client_info": {
           "package_name": "com.amfoss.personal_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "781619694633-4fnff1o3k3a236tgq4q6ckla137justf.apps.googleusercontent.com",
+          "client_id": "797974660593-fdk8qc7r5ajt17q12doctan0vol6krr2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amfoss.personal_project",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "781619694633-589kopbu6t4qm6h4e061nunrbemder25.apps.googleusercontent.com",
+          "client_id": "797974660593-jushucdimbk32f439nohk49jeij27351.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJ-ZOUhhzc5y_tAuvHnNNIWnrUfzKCVhg"
+          "current_key": "AIzaSyCVthLwDO6ElrerD0v8bnYs4i1baKJI86M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "781619694633-589kopbu6t4qm6h4e061nunrbemder25.apps.googleusercontent.com",
+              "client_id": "797974660593-jushucdimbk32f439nohk49jeij27351.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

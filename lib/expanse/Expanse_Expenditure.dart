@@ -5,22 +5,22 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
 
-class Income extends StatefulWidget {
-  const Income({Key? key}) : super(key: key);
+class Expenditure extends StatefulWidget {
+  const Expenditure({Key? key}) : super(key: key);
 
   @override
-  _IncomeState createState() => _IncomeState();
+  _ExpenditureState createState() => _ExpenditureState();
 }
 
-class _IncomeState extends State<Income> {
+class _ExpenditureState extends State<Expenditure> {
   final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
   late DateTime _selectedDate;
   late String amount ;
   String remark='';
-  String dropdownvalue = '___Select Source___';
+  String dropdownvalue = '___Select Sink___';
 
-  var items =  ["___Select Source___","Home","Borrow","Awards","Family"];
+  var items =  ["___Select Sink___","Food","Travel","Cloths","Medicine","Miscellaneous"];
 
 
   @override
@@ -44,7 +44,7 @@ class _IncomeState extends State<Income> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(
-          'ADD INCOME',
+          'ADD EXPENDITURE',
           style: TextStyle(
               color: Colors.black, fontWeight: FontWeight.normal, fontSize: 25),
         ),
@@ -72,7 +72,7 @@ class _IncomeState extends State<Income> {
                             showYears: true,
                             initialDate: _selectedDate,
                             firstDate:
-                                DateTime.now().subtract(Duration(days: 7)),
+                            DateTime.now().subtract(Duration(days: 7)),
                             lastDate: DateTime.now().add(Duration(days: 1095)),
                             onDateSelected: (date) {
                               setState(() {
@@ -156,15 +156,17 @@ class _IncomeState extends State<Income> {
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
           String id=_selectedDate.toString();
-          DocumentReference ref= FirebaseFirestore.instance
-              .collection('Transaction').doc(id);
-          ref.set({
-            'Day': id.substring(0,10),
-            'Source': dropdownvalue,
-            'Amount': amount,
-            'remark':remark,
-            'type':'INCOME',
-          });
+          if(dropdownvalue!="Miscellaneous" || remark!='') {
+            DocumentReference ref = FirebaseFirestore.instance
+                .collection('Transaction').doc(id);
+            ref.set({
+              'Day': id.substring(0, 10),
+              'Source': dropdownvalue,
+              'Amount': amount,
+              'remark': remark,
+              'type': 'EXPENDITURE',
+            });
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -173,7 +175,7 @@ class _IncomeState extends State<Income> {
           if (kDebugMode) {
             print(databaseReference);
           }
-      },
+        },
         icon: const Icon(Icons.save),
         label: const Text("Save"),
       ),

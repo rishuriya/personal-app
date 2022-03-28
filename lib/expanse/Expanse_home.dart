@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_project/expanse/Expanse_Expenditure.dart';
 import 'package:personal_project/expanse/Expense_Income.dart';
 
 import '../Home.dart';
@@ -44,7 +45,7 @@ class _ExpanseState extends State<Expanse> {
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
-        body: Container(
+        body: SingleChildScrollView(
             child: Column(children: [
           Stack(
             children: <Widget>[
@@ -213,7 +214,7 @@ class _ExpanseState extends State<Expanse> {
                                     onTap: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Home()),
+                                          builder: (context) => const Expenditure()),
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
