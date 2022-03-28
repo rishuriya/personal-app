@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "781619694633",
+    "project_id": "expense-cllg",
+    "storage_bucket": "expense-cllg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781619694633:android:a561ea6259f51428bd6038",
+        "android_client_info": {
+          "package_name": "com.amfoss.personal_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781619694633-4fnff1o3k3a236tgq4q6ckla137justf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amfoss.personal_project",
+            "certificate_hash": "267d2d5f3f1f07b012fad4e05b779dba03dfa1a2"
+          }
+        },
+        {
+          "client_id": "781619694633-589kopbu6t4qm6h4e061nunrbemder25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ-ZOUhhzc5y_tAuvHnNNIWnrUfzKCVhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781619694633-589kopbu6t4qm6h4e061nunrbemder25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

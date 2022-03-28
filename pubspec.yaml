@@ -37,6 +37,8 @@ dependencies:
   flutter_spinkit: ^5.1.0
   font_awesome_flutter: ^10.1.0
   calendar_timeline: ^1.0.4
+  firebase_core: ^1.13.1
+  firebase_analytics: ^9.1.2
 
 dev_dependencies:
   flutter_test:
