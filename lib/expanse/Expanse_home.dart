@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:personal_project/expanse/Expanse_Expenditure.dart';
 import 'package:personal_project/expanse/Expense_Income.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:personal_project/expanse/model.dart';
 import '../Home.dart';
 
 class Expanse extends StatefulWidget {
@@ -17,6 +18,8 @@ class Expanse extends StatefulWidget {
 
 class _ExpanseState extends State<Expanse> {
   List _items = [];
+  final String? kYellowColor = "lol";
+  final String? pColor="nothing";
   // Fetch content from the json file
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/file.json');
@@ -259,57 +262,9 @@ class _ExpanseState extends State<Expanse> {
                         ),
                       ]))),
               Padding(padding: EdgeInsets.all(12),
-              child: Container(
-                height:200,
-                child:_items.isNotEmpty
-                    ?Flex(
-                    direction: Axis.vertical,
-                    children:[
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: _items.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              margin: const EdgeInsets.only(left:10,right:10,top:5,bottom: 5),
-                              child: ListTile(
-                                  isThreeLine: false,
-                                  leading: CircleAvatar(
-                                    radius: 30,
-                                    foregroundImage: NetworkImage(_items[index]["image"]),
-                                  ),
-                                  title: Text(_items[index]["Name"]),
-                                  subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children:[Padding(padding: EdgeInsets.only(top:0),
-                                        child:Text(_items[index]["Artist"]),),
-                                        Padding(padding: EdgeInsets.only(top:0),
-                                          child:Row(
-                                              children:[
-                                                Padding(padding: EdgeInsets.only(top:0),
-                                                    child:Text("Total Tracks   ")
-                                                ),Padding(padding: EdgeInsets.only(top:0),
-                                                    child:Text(_items[index]["Tracks"].toString()))]),)]),
-                                  trailing: Column(
-                                      children:[Padding(padding: EdgeInsets.only(top:5),
-                                        child:Icon(
-                                          Icons.favorite,
-                                        ),),
-                                        Padding(padding: EdgeInsets.only(top:5),
-                                          child:Text(
-                                            _items[index]["Like"].toString(),
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black38),
-                                          ),)
-                                      ]),
 
-                              ),
-                            );
-                          },
-                        ),
-                      ), ])
-                    : Container(),
-                  ),),
+                child: buildDoctorList(),
+                  ),
         ])));
   }
 
@@ -375,12 +330,66 @@ class _ExpanseState extends State<Expanse> {
                         fontSize: 14,
                       ))),
               SizedBox(height: 20),
+
             ],
           ),
         ),
       ),
     );
+
   }
+  List<Expense> token = [Expense( "","","","","","RECENT TRANSACTIONS")];
+  buildDoctorList() {
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('Transaction').orderBy("Day",descending: true).snapshots(),
+    builder: (context, snapshot) {
+    if(snapshot.data != null){
+    for (var element in snapshot.data!.docs) {
+    try{
+      print("hello");
+    token.add(Expense(element['Amount'],element['Day'], element['Mode'],
+        element['Remark'],element['Source'], element['type']));
+    }catch (e){
+    continue;
+    }
+    }
+    }
+
+    return  Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: Column(
+          children: [
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: (token.length<=11)?token.length:11,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: (snapshot.data != null) ? ([Expense(
+                    token[index].amount,
+                    token[index].date,
+                    token[index].mode,
+                    token[index].remark,
+                    token[index].source,
+                    token[index].type,
+
+                  ),
+                    const SizedBox(height: 10,)
+                  ]) : ([const CircularProgressIndicator()]),
+                );
+              },
+            ),
+            const SizedBox(height: 80),
+          ],
+        )
+    );
+    });
+  }
+
 }
 
 //Costom CLipper class with Path

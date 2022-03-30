@@ -164,7 +164,7 @@ class _IncomeState extends State<Income> {
                   labelText: 'Amount',
                   hintText: 'Amount',
                 ),
-                onChanged: (value) => amount = value,
+                onChanged: (value) => amount = "Rs."+value,
               ),
             ),
             SizedBox(height: 20),
@@ -197,14 +197,11 @@ class _IncomeState extends State<Income> {
             'Mode': mode,
             'type':'INCOME',
           });
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => Expanse()),
           );
-          if (kDebugMode) {
-            print(databaseReference);
-          }
       },
         icon: const Icon(Icons.save),
         label: const Text("Save"),
