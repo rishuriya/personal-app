@@ -7,6 +7,8 @@ import 'package:personal_project/expanse/Expanse_Expenditure.dart';
 import 'package:personal_project/expanse/Expense_Income.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/model.dart';
+import 'package:personal_project/expanse/var/var.dart';
+import 'package:personal_project/expanse/var/var.dart';
 import '../Home.dart';
 
 class Expanse extends StatefulWidget {
@@ -34,6 +36,7 @@ class _ExpanseState extends State<Expanse> {
     // TODO: implement initState
     super.initState();
     readJson();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -82,8 +85,8 @@ class _ExpanseState extends State<Expanse> {
                             Padding(
                               padding: EdgeInsets.only(left: 6, right: 6),
                               child: _buildItemCard(
-                                  title: "Income",
-                                  total: "Total: 5",
+                                  title: "Bank",
+                                  total: bank.toString(),
                                   used: "Active: 3",
                                   totalNum: 5,
                                   usedNum: 3,
@@ -338,57 +341,7 @@ class _ExpanseState extends State<Expanse> {
     );
 
   }
-  List<Expense> token = [Expense( "","","","","","RECENT TRANSACTIONS")];
-  buildDoctorList() {
 
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('Transaction').orderBy("Day",descending: true).snapshots(),
-    builder: (context, snapshot) {
-    if(snapshot.data != null){
-    for (var element in snapshot.data!.docs) {
-    try{
-      print("hello");
-    token.add(Expense(element['Amount'],element['Day'], element['Mode'],
-        element['Remark'],element['Source'], element['type']));
-    }catch (e){
-    continue;
-    }
-    }
-    }
-
-    return  Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-        ),
-        child: Column(
-          children: [
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: (token.length<=11)?token.length:11,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: (snapshot.data != null) ? ([Expense(
-                    token[index].amount,
-                    token[index].date,
-                    token[index].mode,
-                    token[index].remark,
-                    token[index].source,
-                    token[index].type,
-
-                  ),
-                    const SizedBox(height: 10,)
-                  ]) : ([const CircularProgressIndicator()]),
-                );
-              },
-            ),
-            const SizedBox(height: 80),
-          ],
-        )
-    );
-    });
-  }
 
 }
 

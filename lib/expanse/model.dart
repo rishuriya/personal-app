@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:personal_project/Home.dart';
+import 'var/var.dart';
 class Expense extends StatelessWidget {
-
   final String? date;
   final String? mode ;
-  final String? amount;
+  final int? amount;
   final String? source;
   final String? remark;
   final String? type;
@@ -17,21 +17,19 @@ class Expense extends StatelessWidget {
       this.remark,
         this.source,
       this.type,{Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context)
-        => Home()));
+        => const Home()));
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.purple.shade200.withOpacity(0.1),
+          color: Colors.deepPurpleAccent.shade100.withOpacity(0.4),
           borderRadius: BorderRadius.circular(10),
         ),
         child: FutureBuilder(
-
             builder: (context,AsyncSnapshot<Uint8List?> snapshot) {
               return Padding(
                 padding: const EdgeInsets.all(10),
@@ -41,7 +39,7 @@ class Expense extends StatelessWidget {
                   subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:[Padding(padding: EdgeInsets.only(top:0),
-                        child:Text(amount!),),
+                        child:Text(amount.toString()),),
                         Padding(padding: EdgeInsets.only(top:0),
                           child:Row(
                               children:[
@@ -58,7 +56,11 @@ class Expense extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.black38),
-                          ),)
+                          ),),
+                Padding(padding: EdgeInsets.only(top:5),
+                        child:
+                        caluclation(),
+                )
                       ]),
 
                 ),
@@ -68,5 +70,14 @@ class Expense extends StatelessWidget {
       ),
     );
   }
+  caluclation(){
+
+    if(type=='INCOME' && mode=='Bank') {
+      in_bank ??= 0;
+      in_bank = in_bank! + amount!;
+      
+    }
 
 }
+}
+int? bank=in_bank;

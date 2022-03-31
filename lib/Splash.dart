@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:personal_project/Home.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
+import 'package:personal_project/expanse/var/var.dart';
 
 
 class Splash extends StatefulWidget {
@@ -16,6 +17,7 @@ class _SplashState extends State<Splash> {
   void initState(){
     super.initState();
     _navigateToHome();
+    buildDoctorList();
   }
 
   _navigateToHome()async{

@@ -17,12 +17,19 @@ class _IncomeState extends State<Income> {
   final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
   late DateTime _selectedDate;
-  late String amount ;
+  late int amount ;
   String remark='';
   String dropdownvalue = '___Select Source___';
-  String mode='';
-  var items =  ["___Select Source___","Home","Borrow","Awards","Family"];
+  String mode='Cash';
+  var items =  ["___Select Source___","Home","Borrow","Awards","Family","Bank"];
+  final _amount = TextEditingController();
 
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _amount.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -117,6 +124,7 @@ class _IncomeState extends State<Income> {
               ],
               radioButtonValue: (values) {
                 mode=values.toString();
+                print(mode);
               },
               defaultSelected: "Cash",
               horizontal: false,
@@ -158,13 +166,15 @@ class _IncomeState extends State<Income> {
             Padding(
               padding: const EdgeInsets.only(left: 16,right:16,),
               child: TextField(
+                controller: _amount,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
                   labelText: 'Amount',
                   hintText: 'Amount',
                 ),
-                onChanged: (value) => amount = "Rs."+value,
+                onChanged: (value) => amount=int.parse(_amount.text)
               ),
             ),
             SizedBox(height: 20),

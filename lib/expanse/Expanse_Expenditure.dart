@@ -17,11 +17,19 @@ class _ExpenditureState extends State<Expenditure> {
   final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
   late DateTime _selectedDate;
-  late String amount ;
+  int amount=0 ;
   String remark='';
   String dropdownvalue = '___Select Sink___';
-  String mode='';
+  String mode='Cash';
   var items =  ["___Select Sink___","Food","Travel","Cloths","Medicine","Miscellaneous"];
+  final _amount = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _amount.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -158,13 +166,15 @@ class _ExpenditureState extends State<Expenditure> {
             Padding(
               padding: const EdgeInsets.only(left: 16,right:16,),
               child: TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                  labelText: 'Amount',
-                  hintText: 'Amount',
-                ),
-                onChanged: (value) => amount = value,
+                  controller: _amount,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    labelText: 'Amount',
+                    hintText: 'Amount',
+                  ),
+                  onChanged: (value) => amount=int.parse(_amount.text)
               ),
             ),
             SizedBox(height: 20),
