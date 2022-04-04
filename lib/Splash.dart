@@ -17,7 +17,6 @@ class _SplashState extends State<Splash> {
   void initState(){
     super.initState();
     _navigateToHome();
-    buildDoctorList();
   }
 
   _navigateToHome()async{

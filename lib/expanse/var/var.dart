@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../model.dart';
 
-int? in_bank;
-int? in_hand;
-
+int? in_hand=0;
+int? in_bank =0;
+int? income=0;
+int? expenditure =0;
 List<Expense> token = [Expense( 0,"", " ","","","RECENT TRANSACTIONS")];
 buildDoctorList() {
 
