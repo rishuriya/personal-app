@@ -1,10 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/Home.dart';
-import 'package:personal_project/expanse/Expanse_home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'var/var.dart';
 class Expense extends StatelessWidget {
   final String? date;
@@ -44,7 +41,7 @@ class Expense extends StatelessWidget {
                   subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [Padding(padding: EdgeInsets.only(top: 0),
-                        child: Text(amount.toString()),),
+                        child: Text("₹${amount.toString()}"),),
                         Padding(padding: EdgeInsets.only(top: 0),
                           child: Row(
                               children: [

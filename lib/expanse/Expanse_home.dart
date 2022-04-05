@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:personal_project/expanse/Expanse_Expenditure.dart';
 import 'package:personal_project/expanse/Expense_Income.dart';
@@ -16,26 +14,16 @@ class Expanse extends StatefulWidget {
 }
 
 class _ExpanseState extends State<Expanse> {
-  List _items = [];
   CollectionReference users = FirebaseFirestore.instance.collection('Transaction');
   String date=DateTime.now().toString().substring(5, 7);
   final String? kYellowColor = "lol";
   final String? pColor="nothing";
   // Fetch content from the json file
-  Future<void> readJson() async {
-    final String response = await rootBundle.loadString('assets/file.json');
-    final data = await json.decode(response);
-    setState(() {
-      _items = data["item"];
-    });
 
-  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    readJson();
-
   }
   @override
   Widget build(BuildContext context) {
@@ -58,11 +46,15 @@ class _ExpanseState extends State<Expanse> {
     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
     if (snapshot.hasError) {
-    return Text("Something went wrong");
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
     }
 
     if (snapshot.hasData && !snapshot.data!.exists) {
-    return Text("Document does not exist");
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
     }
 
     if (snapshot.connectionState == ConnectionState.done) {
@@ -102,7 +94,7 @@ class _ExpanseState extends State<Expanse> {
                                   title: "Bank",
                                   total: "₹ ${data['in_bank'].toString()}",
                                   color: Colors.blue,
-                                  icon: FontAwesomeIcons.wallet,
+                                  icon: FontAwesomeIcons.buildingColumns,
                                   onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -113,9 +105,9 @@ class _ExpanseState extends State<Expanse> {
                               padding: EdgeInsets.only(left: 6, right: 6),
                               child: _buildItemCard(
                                   title: "In Hand",
-                                  total: "₹ ${data['income'].toString()}",
+                                  total: "₹ ${data['in_hand'].toString()}",
                                   color: Colors.red,
-                                  icon: FontAwesomeIcons.moneyBill,
+                                  icon: FontAwesomeIcons.wallet,
                                   onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -126,13 +118,13 @@ class _ExpanseState extends State<Expanse> {
                               padding: EdgeInsets.only(left: 6, right: 6),
                               child: _buildItemCard(
                                   title: "Expenditure",
-                                  total: "₹ ${data['in_hand'].toString()}",
+                                  total: "₹ ${data['expenditure'].toString()}",
                                   color: Colors.indigo,
-                                  icon: FontAwesomeIcons.moneyCheck,
+                                  icon: FontAwesomeIcons.moneyBill,
                                   onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Home()),
+                                            builder: (context) =>const Home()),
                                       )),
                             )
                           ],
@@ -144,14 +136,14 @@ class _ExpanseState extends State<Expanse> {
           Column(
             children:[
           Padding(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Container(
                   height: 175,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(6),
                           child: SizedBox(
                               width: 170.0,
                               height: 175.0,
@@ -168,7 +160,7 @@ class _ExpanseState extends State<Expanse> {
                                     onTap: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Income()),
+                                          builder: (context) => const Income()),
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
@@ -177,24 +169,24 @@ class _ExpanseState extends State<Expanse> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         RichText(
-                                            text: TextSpan(
+                                            text: const TextSpan(
                                           children: [
                                             WidgetSpan(
                                                 child: Center(
                                             child:FaIcon(
-                                              FontAwesomeIcons.add,
+                                              FontAwesomeIcons.plus,
                                               color: Colors.deepPurpleAccent,
                                               size: 30,
                                             )),),
                                           ],
                                         )),
-                                        Divider(
+                                        const Divider(
                                           thickness: 1,
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Center(
                                           child:RichText(
-                                          text: TextSpan(
+                                          text: const TextSpan(
                                               text: 'INCOME',
                                               style: TextStyle(
                                                 color: Colors.black,
@@ -212,7 +204,7 @@ class _ExpanseState extends State<Expanse> {
                         ),
 
                         Padding(
-                          padding: EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(6),
                           child: SizedBox(
                               width: 170.0,
                               height: 175.0,
@@ -238,24 +230,24 @@ class _ExpanseState extends State<Expanse> {
                                       CrossAxisAlignment.start,
                                       children: [
                                         RichText(
-                                            text: TextSpan(
+                                            text: const TextSpan(
                                               children: [
                                                 WidgetSpan(
                                                   child: Center(
                                                       child:FaIcon(
-                                                        FontAwesomeIcons.subtract,
+                                                        FontAwesomeIcons.minus,
                                                         color: Colors.deepPurpleAccent,
                                                         size: 30,
                                                       )),),
                                               ],
                                             )),
-                                        Divider(
+                                        const Divider(
                                           thickness: 1,
                                         ),
                                         SizedBox(height: 10),
                                         Center(
                                           child:RichText(
-                                            text: TextSpan(
+                                            text: const TextSpan(
                                                 text: 'EXPENSE',
                                                 style: TextStyle(
                                                   color: Colors.black,
@@ -280,7 +272,11 @@ class _ExpanseState extends State<Expanse> {
           )
 
     ]);}
-    return Text("Error");
+    return const Center(
+      child: Padding(
+        padding:EdgeInsets.only(top:245),
+        child:CircularProgressIndicator(),
+    ));
     }
     )));
   }

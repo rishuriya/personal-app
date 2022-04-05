@@ -45,6 +45,7 @@ dependencies:
   sqflite: ^2.0.2
   path: ^1.8.0
   shared_preferences: ^2.0.13
+  firebase_auth: ^3.3.12
 
 dev_dependencies:
   flutter_test:

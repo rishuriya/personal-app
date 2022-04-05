@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:personal_project/Home.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
-import 'package:personal_project/expanse/var/var.dart';
 
+import 'login.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> {
   _navigateToHome()async{
     await Future.delayed(const Duration(milliseconds: 5000));
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Expanse()
+          context, MaterialPageRoute(builder: (context) => Login()
       ));
     }
 
@@ -33,26 +33,25 @@ class _SplashState extends State<Splash> {
       body: Center(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child:Image.asset(
-                'images/splash_1.png',
-                height: 500,
-                width: 300,
-                alignment: Alignment.center,
+            const Padding(
+              padding: const EdgeInsets.only(top:350,bottom:75),
+          child:FaIcon(
+            FontAwesomeIcons.indianRupeeSign,
+            color: Colors.deepPurpleAccent,
+            size: 150,
+          )
               ),
-            ),
             Padding(
               padding: const EdgeInsets.all(0),
               child:SpinKitFadingCube(
-                color: Colors.yellow.shade100,
+                color: Colors.yellow.shade300,
                 size: 30.0,
               ),
             )
           ],
         ),
       ),
-      backgroundColor: Colors.pinkAccent,
+      backgroundColor: Colors.deepPurple.shade200,
     );
   }
 }
