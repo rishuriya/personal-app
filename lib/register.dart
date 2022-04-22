@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +13,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
   @override
   Widget build(BuildContext context) {
+
 
     //TODO update what details you want
     //test feild state
@@ -120,7 +123,7 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(fontSize: 16,
                               color: Colors.white),
-                          onChanged: (value)=>email,
+                          onChanged: (value)=>email=value,
                         )),
                   ],
                 ),
@@ -129,55 +132,6 @@ class _RegisterState extends State<Register> {
                   height: 16,
                 ),
                 //TODO remove unwanted containers
-                Stack(
-                  children: <Widget>[
-                    Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        height: 50,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              height: 22,
-                              width: 22,
-                              child: Icon(
-                                Icons.home,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ],
-                        )),
-                    Container(
-                        height: 50,
-                        margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                              hintText: 'City',
-                              focusedBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              hintStyle: TextStyle(
-                                  color: Colors.white70
-                              )
-                          ),
-                          style: TextStyle(fontSize: 16,
-                              color: Colors.white),
-                          onChanged: (value)=>city,
-                        )),
-                  ],
-                ),
-                //phonenumber
-                SizedBox(
-                  height: 16,
-                ),
                 Stack(
                   children: <Widget>[
                     Container(
@@ -219,7 +173,7 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(fontSize: 16,
                               color: Colors.white),
-                          onChanged: (value)=>phonenumber,
+                          onChanged: (value)=>phonenumber=value,
                         )),
                   ],
                 ),
@@ -268,7 +222,7 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(fontSize: 16,
                               color: Colors.white),
-                          onChanged: (value)=>cllgname,
+                          onChanged: (value)=>cllgname=value,
                         )),
                   ],
                 ),
@@ -317,7 +271,7 @@ class _RegisterState extends State<Register> {
                           ),
                           style: TextStyle(fontSize: 16,
                               color: Colors.white),
-                          onChanged: (value)=>password,
+                          onChanged: (value)=>password=value,
                         )),
                   ],
                 ),
@@ -327,7 +281,7 @@ class _RegisterState extends State<Register> {
                 InkWell(
                   onTap :()  {
                     print(email);
-                    _signupUser(email, password);
+                    _signupUser(email, password,cllgname,phonenumber);
 
 
                   },
@@ -394,13 +348,14 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-  Future<String?> _signupUser(emailid,passwordid ) async {
+  Future<String?> _signupUser(emailid,passwordid,collegeid,phoneno ) async {
     String? email_id = emailid;
     String? password_id = passwordid;
 
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email_id!, password: password_id!);
+      user = _auth.currentUser;
     }
     on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -457,7 +412,27 @@ class _RegisterState extends State<Register> {
       }
 
     }
+    String date=DateTime.now().toString().substring(5, 7);
+    String year=DateTime.now().toString().substring(0, 4);
+    String? id=user?.uid;
     if (user != null) {
+      DocumentReference ref= FirebaseFirestore.instance
+          .collection('User').doc(id);
+      ref.set({
+        'email': email_id,
+        'uid': id,
+        'College': collegeid,
+        'PhoneNo':phoneno,
+        'type':'USER',
+      });
+      DocumentReference ref1= FirebaseFirestore.instance
+          .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
+      ref1.set({
+        "in_bank":0,
+        "in_hand":0,
+        "income":0,
+        "expenditure":0
+      });
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Expanse()),

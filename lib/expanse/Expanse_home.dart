@@ -5,6 +5,7 @@ import 'package:personal_project/expanse/Expense_Income.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/var/var.dart';
 import '../Home.dart';
+import '../login.dart';
 
 class Expanse extends StatefulWidget {
   const Expanse({Key? key}) : super(key: key);
@@ -14,8 +15,9 @@ class Expanse extends StatefulWidget {
 }
 
 class _ExpanseState extends State<Expanse> {
-  CollectionReference users = FirebaseFirestore.instance.collection('Transaction');
+  CollectionReference users = FirebaseFirestore.instance.collection("User").doc(user?.uid).collection("Transaction");
   String date=DateTime.now().toString().substring(5, 7);
+  String year=DateTime.now().toString().substring(0, 4);
   final String? kYellowColor = "lol";
   final String? pColor="nothing";
   // Fetch content from the json file
@@ -24,6 +26,7 @@ class _ExpanseState extends State<Expanse> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    buildDoctorList();
   }
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class _ExpanseState extends State<Expanse> {
         ),
         body: SingleChildScrollView(
             child: FutureBuilder<DocumentSnapshot>(
-    future: users.doc("amount").collection("Rishav").doc(date).get(),
+    future: users.doc("amount").collection(year).doc(date).get(),
     builder:
     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
@@ -339,7 +342,6 @@ class _ExpanseState extends State<Expanse> {
     );
 
   }
-
 
 }
 

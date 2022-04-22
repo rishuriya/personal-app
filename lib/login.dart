@@ -108,7 +108,7 @@ class _LoginState extends State<Login> {
                               border: InputBorder.none,
                               hintStyle: TextStyle(color: Colors.white70)),
                           style: TextStyle(fontSize: 16, color: Colors.white),
-                          onChanged: (value) => email,
+                          onChanged: (value) => email = value,
                         )),
                   ],
                 ),
@@ -155,7 +155,7 @@ class _LoginState extends State<Login> {
                           ),
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white),
-                          onChanged: (value) => password,
+                          onChanged: (value) => password =value,
                         )),
                   ],
                 ),
@@ -163,50 +163,8 @@ class _LoginState extends State<Login> {
                   height: 10,
                 ),
                 InkWell(
-                  onTap: () async {
-                    try {
-                      UserCredential userCredential =
-                          await _auth.signInWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
-                      user = userCredential.user;
-                      user = _auth.currentUser;
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        final snackbar = SnackBar(
-                          content: Text('User Not Found'),
-                          action: SnackBarAction(
-                            label: 'OK',
-                            onPressed: () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                      }
-                      if (e.code == 'wrong-password') {
-                        final snackbar = SnackBar(
-                          content: Text('Wrong Password'),
-                          action: SnackBarAction(
-                            label: 'OK',
-                            onPressed: () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                      }
-                      return null;
-                    }
-                    if (user != null) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Expanse()),
-                      );
-                    }
+                  onTap: () {
+                    _authUser(email, password);
                   },
                   child: Container(
                     height: 50,
@@ -263,5 +221,50 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+  }
+  Future<String?> _authUser(emailid,passwordid ) async {
+    String? email_id = emailid;
+    String? password_id = passwordid;
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email_id!,
+        password: password_id!,
+      );
+      user = userCredential.user;
+      user = _auth.currentUser;
+    }  on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        final snackbar = SnackBar(
+          content: Text('User Not Found'),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {
+              ScaffoldMessenger.of(context)
+                  .hideCurrentSnackBar();
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
+      if (e.code == 'wrong-password') {
+        final snackbar = SnackBar(
+          content: Text('Wrong Password'),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {
+              ScaffoldMessenger.of(context)
+                  .hideCurrentSnackBar();
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
+    }
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Expanse()),
+      );
+    }
   }
 }

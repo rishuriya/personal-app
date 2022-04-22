@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,9 +22,19 @@ class _SplashState extends State<Splash> {
 
   _navigateToHome()async{
     await Future.delayed(const Duration(milliseconds: 5000));
+    user =FirebaseAuth.instance.currentUser;
+    if (user != null){
+      //  goto MainPage(mainUser:_tempUser);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const Expanse(),
+        ),
+      );
+    }else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Login()
       ));
+    }
     }
 
 

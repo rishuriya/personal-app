@@ -6,6 +6,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
 
+import '../login.dart';
+
 class Expenditure extends StatefulWidget {
   const Expenditure({Key? key}) : super(key: key);
 
@@ -196,10 +198,11 @@ class _ExpenditureState extends State<Expenditure> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
-          String id=_selectedDate.toString();
-          if(dropdownvalue!="Miscellaneous" || remark!='') {
+          if(amount!=0 && remark!="" && dropdownvalue!="___Select Sink___") {
+            String? uid = user?.uid;
+            String id = _selectedDate.toString()+DateTime.now().toString();
             DocumentReference ref = FirebaseFirestore.instance
-                .collection('Transaction').doc(id);
+                .collection('User').doc(uid).collection('Transaction').doc(id);
             ref.set({
               'Day': id.substring(0, 10),
               'Source': dropdownvalue,
@@ -208,14 +211,31 @@ class _ExpenditureState extends State<Expenditure> {
               'Mode':mode,
               'type': 'EXPENDITURE',
             });
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const Expanse()),
-          );
-          if (kDebugMode) {
-            print(databaseReference);
+            final snackbar = SnackBar(
+              content: const Text('Transaction Stored!'),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () {
+                  ScaffoldMessenger.of(context)
+                      .hideCurrentSnackBar();
+                  Navigator.pop(
+                      context);
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          }else{
+            final snackbar = SnackBar(
+              content: const Text('All field are mandatory!'),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () {
+                  ScaffoldMessenger.of(context)
+                      .hideCurrentSnackBar();
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
           }
         },
         icon: const Icon(Icons.save),

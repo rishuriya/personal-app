@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/Home.dart';
+import '../login.dart';
 import 'var/var.dart';
 class Expense extends StatelessWidget {
   final String? date;
@@ -77,6 +78,7 @@ class Expense extends StatelessWidget {
 
   cal() {
     String date=DateTime.now().toString().substring(5, 7);
+    String year=DateTime.now().toString().substring(0, 4);
     if (type == 'INCOME' && mode == 'Bank') {
       in_bank = in_bank! + amount!;
       income=income!+amount!;
@@ -97,7 +99,7 @@ class Expense extends StatelessWidget {
     }
 
     DocumentReference ref= FirebaseFirestore.instance
-        .collection('Transaction').doc("amount").collection("Rishav").doc(date);
+        .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
     ref.set({
       "in_bank":in_bank,
       "in_hand":in_hand,

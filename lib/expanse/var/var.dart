@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../login.dart';
 import '../model.dart';
 
 int? in_hand=0;
@@ -8,9 +9,9 @@ int? income=0;
 int? expenditure =0;
 List<Expense> token = [Expense( 0,"", " ","","","RECENT TRANSACTIONS")];
 buildDoctorList() {
-
+  String? uid=user?.uid;
   return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Transaction').orderBy("Day",descending: true).snapshots(),
+      stream: FirebaseFirestore.instance.collection('User').doc(uid).collection('Transaction').orderBy("Day",descending: true).snapshots(),
       builder: (context, snapshot) {
         if(snapshot.data != null){
           for (var element in snapshot.data!.docs) {
