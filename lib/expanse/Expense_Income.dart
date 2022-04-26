@@ -179,6 +179,10 @@ class _IncomeState extends State<Income> {
                 onChanged: (newValue) {
                   setState(() {
                     dropdownvalue = newValue.toString();
+                    in_bank=data["in_bank"];
+                    income=data["income"];
+                    in_hand=data["in_hand"];
+                    print(in_bank);
                   });
                 },
 
@@ -224,6 +228,25 @@ class _IncomeState extends State<Income> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
+          if (mode == 'Bank') {
+            in_bank = in_bank! + amount!;
+            income=income!+amount!;
+          }if (mode == 'Cash' && dropdownvalue=="Bank") {
+            in_bank = in_bank! - amount!;
+            in_hand=in_hand!+amount!;
+          }if (mode == 'Cash' && dropdownvalue!="Bank") {
+            in_hand=in_hand!+amount!;
+            income=income!+amount!;
+          }
+
+          DocumentReference ref= FirebaseFirestore.instance
+              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
+          ref.set({
+            "in_bank":in_bank,
+            "in_hand":in_hand,
+            "income":income,
+            "expenditure":expenditure
+          });
           if(amount!=0 && remark!="" && dropdownvalue!='___Select Source___') {
             String? uid = user?.uid;
             String? id = _selectedDate.toString()+DateTime.now().toString();

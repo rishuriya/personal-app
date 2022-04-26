@@ -63,10 +63,6 @@ class Expense extends StatelessWidget {
                                 fontSize: 12,
                                 color: Colors.black38),
                           ),),
-                Padding(padding: EdgeInsets.only(top:5),
-                        child:
-                        cal(),
-                )
                       ]),
 
                 ),
@@ -76,36 +72,6 @@ class Expense extends StatelessWidget {
       )
     ); }
 
-  cal() {
-    String date=DateTime.now().toString().substring(5, 7);
-    String year=DateTime.now().toString().substring(0, 4);
-    if (type == 'INCOME' && mode == 'Bank') {
-      in_bank = in_bank! + amount!;
-      income=income!+amount!;
-    }if (type == 'INCOME' && mode == 'Cash' && source=="Bank") {
-      in_bank = in_bank! - amount!;
-      in_hand=in_hand!+amount!;
-    }if (type == 'INCOME' && mode == 'Cash' && source!="Bank") {
-      in_hand=in_hand!+amount!;
-      income=income!+amount!;
-    }
-    if (type == 'EXPENDITURE' && mode == 'Upi') {
-      in_bank = in_bank! - amount!;
-      expenditure=expenditure!+amount!;
-    }
-    if (type == 'EXPENDITURE' && mode == 'Cash') {
-      in_hand = in_hand! - amount!;
-      expenditure=expenditure!+amount!;
-    }
 
-    DocumentReference ref= FirebaseFirestore.instance
-        .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
-    ref.set({
-      "in_bank":in_bank,
-      "in_hand":in_hand,
-      "income":income,
-      "expenditure":expenditure
-    });
 
-  }
 }
