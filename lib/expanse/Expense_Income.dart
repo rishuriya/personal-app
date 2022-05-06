@@ -238,7 +238,7 @@ class _IncomeState extends State<Income> {
             in_hand=in_hand!+amount!;
             income=income!+amount!;
           }
-
+          //List data=users.doc("amount").collection(year).doc(date).get() as List;
           DocumentReference ref= FirebaseFirestore.instance
               .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
           ref.set({

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
+import 'package:personal_project/expanse/var/var.dart';
 
 import '../login.dart';
 
@@ -17,7 +18,9 @@ class Expenditure extends StatefulWidget {
 
 class _ExpenditureState extends State<Expenditure> {
   final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-
+  CollectionReference users = FirebaseFirestore.instance.collection("User").doc(user?.uid).collection("Transaction");
+  String date=DateTime.now().toString().substring(5, 7);
+  String year=DateTime.now().toString().substring(0, 4);
   late DateTime _selectedDate;
   int amount=0 ;
   String remark='';
@@ -61,7 +64,26 @@ class _ExpenditureState extends State<Expenditure> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: FutureBuilder<DocumentSnapshot>(
+    future: users.doc("amount").collection(year).doc(date).get(),
+    builder:
+    (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    if (snapshot.hasError) {
+    return const Center(
+    child: CircularProgressIndicator(),
+    );
+    }
+
+    if (snapshot.hasData && !snapshot.data!.exists) {
+    return const Center(
+    child: CircularProgressIndicator(),
+    );
+    }
+
+    if (snapshot.connectionState == ConnectionState.done) {
+    Map<String, dynamic> data = snapshot.data!.data() as Map<String,
+    dynamic>;
+    return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
@@ -193,14 +215,37 @@ class _ExpenditureState extends State<Expenditure> {
               ),
             ),
           ],
-        ),
-      ),
+        );
+
+      }
+      return const Center(
+      child: Padding(
+      padding:EdgeInsets.only(top:245),
+      child:CircularProgressIndicator(),
+      ));
+      }),),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
-          if(amount!=0 && remark!="" && dropdownvalue!="___Select Sink___") {
+          if (mode == 'upi') {
+            in_bank = in_bank! - amount!;
+            expenditure=expenditure!+amount!;
+          }if (mode == 'Cash') {
+            in_hand=in_hand!-amount!;
+            expenditure=expenditure!-amount!;
+          }
+
+          DocumentReference ref= FirebaseFirestore.instance
+              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
+          ref.set({
+            "in_bank":in_bank,
+            "in_hand":in_hand,
+            "income":income,
+            "expenditure":expenditure
+          });
+          if(amount!=0 && remark!="" && dropdownvalue!='___Select Sink___') {
             String? uid = user?.uid;
-            String id = _selectedDate.toString()+DateTime.now().toString();
+            String? id = _selectedDate.toString()+DateTime.now().toString();
             DocumentReference ref = FirebaseFirestore.instance
                 .collection('User').doc(uid).collection('Transaction').doc(id);
             ref.set({
@@ -208,7 +253,7 @@ class _ExpenditureState extends State<Expenditure> {
               'Source': dropdownvalue,
               'Amount': amount,
               'Remark': remark,
-              'Mode':mode,
+              'Mode': mode,
               'type': 'EXPENDITURE',
             });
             final snackbar = SnackBar(
@@ -224,6 +269,7 @@ class _ExpenditureState extends State<Expenditure> {
               ),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackbar);
+            buildDoctorList();
           }else{
             final snackbar = SnackBar(
               content: const Text('All field are mandatory!'),
@@ -237,6 +283,9 @@ class _ExpenditureState extends State<Expenditure> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackbar);
           }
+
+          print("refresh done ");
+
         },
         icon: const Icon(Icons.save),
         label: const Text("Save"),

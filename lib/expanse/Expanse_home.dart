@@ -15,7 +15,7 @@ class Expanse extends StatefulWidget {
 }
 
 class _ExpanseState extends State<Expanse> {
-  CollectionReference users = FirebaseFirestore.instance.collection("User").doc(user?.uid).collection("Transaction");
+  CollectionReference usersdata = FirebaseFirestore.instance.collection("User").doc(user?.uid).collection("Transaction");
   String date=DateTime.now().toString().substring(5, 7);
   String year=DateTime.now().toString().substring(0, 4);
   final String? kYellowColor = "lol";
@@ -31,7 +31,7 @@ class _ExpanseState extends State<Expanse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
           centerTitle: false,
           elevation: 0,
@@ -44,253 +44,253 @@ class _ExpanseState extends State<Expanse> {
         ),
         body: SingleChildScrollView(
             child: FutureBuilder<DocumentSnapshot>(
-    future: users.doc("amount").collection(year).doc(date).get(),
-    builder:
-    (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                future: usersdata.doc("amount").collection(year).doc(date).get(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
-    if (snapshot.hasError) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-    }
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-    if (snapshot.hasData && !snapshot.data!.exists) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-    }
+                  if (snapshot.hasData && !snapshot.data!.exists) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-    if (snapshot.connectionState == ConnectionState.done) {
-    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-    return Column(children: [
-          Stack(
-            children: [
-              //stack overlaps widgets
-              Opacity(
-                //semi red clippath with more height and with 0.5 opacity
-                opacity: 0.5,
-                child: ClipPath(
-                  clipper: WaveClipper(), //set our custom wave clipper
-                  child: Container(
-                    color: Colors.deepPurple.shade400,
-                    height: 350,
-                  ),
-                ),
-              ),
-
-              ClipPath(
-                  //upper clippath with less height
-
-                  child: Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Container(
-                        height: 250,
-                        child: PageView(
-                          controller: PageController(
-                              viewportFraction: 0.5, initialPage: 1),
-                          scrollDirection: Axis.horizontal,
-                          pageSnapping: false,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 6, right: 6),
-                              child: _buildItemCard(
-                                  title: "Bank",
-                                  total: "₹ ${data['in_bank'].toString()}",
-                                  color: Colors.blue,
-                                  icon: FontAwesomeIcons.buildingColumns,
-                                  onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()),
-                                      )),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 6, right: 6),
-                              child: _buildItemCard(
-                                  title: "In Hand",
-                                  total: "₹ ${data['in_hand'].toString()}",
-                                  color: Colors.red,
-                                  icon: FontAwesomeIcons.wallet,
-                                  onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()),
-                                      )),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 6, right: 6),
-                              child: _buildItemCard(
-                                  title: "Expenditure",
-                                  total: "₹ ${data['expenditure'].toString()}",
-                                  color: Colors.indigo,
-                                  icon: FontAwesomeIcons.moneyBill,
-                                  onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>const Home()),
-                                      )),
-                            )
-                          ],
-                        ),
-                      ))
-
-          ),
-          ]),
-          Column(
-            children:[
-          Padding(
-              padding: const EdgeInsets.all(12),
-              child: Container(
-                  height: 175,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: SizedBox(
-                              width: 170.0,
-                              height: 175.0,
-                              child: Card(
-                                elevation: 2,
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                    return Column(children: [
+                      Stack(
+                          children: [
+                            //stack overlaps widgets
+                            Opacity(
+                              //semi red clippath with more height and with 0.5 opacity
+                              opacity: 0.5,
+                              child: ClipPath(
+                                clipper: WaveClipper(), //set our custom wave clipper
+                                child: Container(
+                                  color: Colors.deepPurple.shade400,
+                                  height: 350,
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Income()),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                            text: const TextSpan(
-                                          children: [
-                                            WidgetSpan(
-                                                child: Center(
-                                            child:FaIcon(
-                                              FontAwesomeIcons.plus,
-                                              color: Colors.deepPurpleAccent,
-                                              size: 30,
-                                            )),),
-                                          ],
-                                        )),
-                                        const Divider(
-                                          thickness: 1,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Center(
-                                          child:RichText(
-                                          text: const TextSpan(
-                                              text: 'INCOME',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 19,
-                                              )),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        ),
-                                      ],
-                                    ),
-                                  ), //Center
-                                ),
-                              ) //Card
                               ),
-                        ),
+                            ),
 
-                        Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: SizedBox(
-                              width: 170.0,
-                              height: 175.0,
-                              child: Card(
-                                elevation: 2,
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
+                            ClipPath(
+                              //upper clippath with less height
+
                                 child: Padding(
-                                  padding: EdgeInsets.all(20),
-
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Expenditure()),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                            text: const TextSpan(
-                                              children: [
-                                                WidgetSpan(
-                                                  child: Center(
-                                                      child:FaIcon(
-                                                        FontAwesomeIcons.minus,
-                                                        color: Colors.deepPurpleAccent,
-                                                        size: 30,
-                                                      )),),
-                                              ],
-                                            )),
-                                        const Divider(
-                                          thickness: 1,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Center(
-                                          child:RichText(
-                                            text: const TextSpan(
-                                                text: 'EXPENSE',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 19,
+                                    padding: EdgeInsets.all(12),
+                                    child: Container(
+                                      height: 250,
+                                      child: PageView(
+                                        controller: PageController(
+                                            viewportFraction: 0.5, initialPage: 1),
+                                        scrollDirection: Axis.horizontal,
+                                        pageSnapping: false,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 6, right: 6),
+                                            child: _buildItemCard(
+                                                title: "Bank",
+                                                total: "₹ ${data['in_bank'].toString()}",
+                                                color: Colors.blue,
+                                                icon: FontAwesomeIcons.buildingColumns,
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => Home()),
                                                 )),
-                                            textAlign: TextAlign.center,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ), //Center
-                                ),
-                              ) //Card
-                          ),
-                        ),
-                      ]))),
-              Padding(padding: EdgeInsets.all(12),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 6, right: 6),
+                                            child: _buildItemCard(
+                                                title: "In Hand",
+                                                total: "₹ ${data['in_hand'].toString()}",
+                                                color: Colors.red,
+                                                icon: FontAwesomeIcons.wallet,
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => Home()),
+                                                )),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 6, right: 6),
+                                            child: _buildItemCard(
+                                                title: "Expenditure",
+                                                total: "₹ ${data['expenditure'].toString()}",
+                                                color: Colors.indigo,
+                                                icon: FontAwesomeIcons.moneyBill,
+                                                onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>const Home()),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                    ))
 
-                child: buildDoctorList(),
-                  ),
-            ]
-          )
+                            ),
+                          ]),
+                      Column(
+                          children:[
+                            Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Container(
+                                    height: 175,
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(6),
+                                            child: SizedBox(
+                                                width: 170.0,
+                                                height: 175.0,
+                                                child: Card(
+                                                  elevation: 2,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(20),
 
-    ]);}
-    return const Center(
-      child: Padding(
-        padding:EdgeInsets.only(top:245),
-        child:CircularProgressIndicator(),
-    ));
-    }
-    )));
+                                                    child: InkWell(
+                                                      onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => const Income()),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                        children: [
+                                                          RichText(
+                                                              text: const TextSpan(
+                                                                children: [
+                                                                  WidgetSpan(
+                                                                    child: Center(
+                                                                        child:FaIcon(
+                                                                          FontAwesomeIcons.plus,
+                                                                          color: Colors.deepPurpleAccent,
+                                                                          size: 30,
+                                                                        )),),
+                                                                ],
+                                                              )),
+                                                          const Divider(
+                                                            thickness: 1,
+                                                          ),
+                                                          const SizedBox(height: 10),
+                                                          Center(
+                                                            child:RichText(
+                                                              text: const TextSpan(
+                                                                  text: 'INCOME',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontSize: 19,
+                                                                  )),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ), //Center
+                                                  ),
+                                                ) //Card
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets.all(6),
+                                            child: SizedBox(
+                                                width: 170.0,
+                                                height: 175.0,
+                                                child: Card(
+                                                  elevation: 2,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(20),
+
+                                                    child: InkWell(
+                                                      onTap: () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => const Expenditure()),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                        children: [
+                                                          RichText(
+                                                              text: const TextSpan(
+                                                                children: [
+                                                                  WidgetSpan(
+                                                                    child: Center(
+                                                                        child:FaIcon(
+                                                                          FontAwesomeIcons.minus,
+                                                                          color: Colors.deepPurpleAccent,
+                                                                          size: 30,
+                                                                        )),),
+                                                                ],
+                                                              )),
+                                                          const Divider(
+                                                            thickness: 1,
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          Center(
+                                                            child:RichText(
+                                                              text: const TextSpan(
+                                                                  text: 'EXPENSE',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontSize: 19,
+                                                                  )),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ), //Center
+                                                  ),
+                                                ) //Card
+                                            ),
+                                          ),
+                                        ]))),
+                            Padding(padding: EdgeInsets.all(12),
+
+                              child: buildDoctorList(),
+                            ),
+                          ]
+                      )
+
+                    ]);}
+                  return const Center(
+                      child: Padding(
+                        padding:EdgeInsets.only(top:245),
+                        child:CircularProgressIndicator(),
+                      ));
+                }
+            )));
   }
 
 
   Widget _buildItemCard(
       {required String title,
-      required String total,
-      required Color color,
-      required IconData icon,
-      required GestureTapCallback onTap}) {
+        required String total,
+        required Color color,
+        required IconData icon,
+        required GestureTapCallback onTap}) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -306,15 +306,15 @@ class _ExpanseState extends State<Expanse> {
             children: [
               RichText(
                   text: TextSpan(
-                children: [
-                  WidgetSpan(
-                      child: FaIcon(
-                    icon,
-                    color: color,
-                    size: 30,
+                    children: [
+                      WidgetSpan(
+                          child: FaIcon(
+                            icon,
+                            color: color,
+                            size: 30,
+                          )),
+                    ],
                   )),
-                ],
-              )),
               SizedBox(height: 25),
               RichText(
                   text: TextSpan(
@@ -361,7 +361,7 @@ class WaveClipper extends CustomClipper<Path> {
         firstStart.dx, firstStart.dy, firstEnd.dx, firstEnd.dy);
 
     var secondStart =
-        Offset(size.width - (size.width / 3.24), size.height - 105);
+    Offset(size.width - (size.width / 3.24), size.height - 105);
     //third point of quadratic bezier curve
     var secondEnd = Offset(size.width, size.height - 10);
     //fourth point of quadratic bezier curve
