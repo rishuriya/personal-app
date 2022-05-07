@@ -425,14 +425,18 @@ class _RegisterState extends State<Register> {
         'PhoneNo':phoneno,
         'type':'USER',
       });
-      DocumentReference ref1= FirebaseFirestore.instance
-          .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
-      ref1.set({
-        "in_bank":0,
-        "in_hand":0,
-        "income":0,
-        "expenditure":0
-      });
+      for( var i = int.parse(date);  i <13; i++ ) {
+        print(i);
+        DocumentReference ref1 = FirebaseFirestore.instance
+            .collection('User').doc(user?.uid).collection('Transaction').doc(
+            "amount").collection(year).doc(i.toString());
+        ref1.set({
+          "in_bank": 0,
+          "in_hand": 0,
+          "income": 0,
+          "expenditure": 0
+        });
+      }
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Expanse()),

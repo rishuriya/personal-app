@@ -62,7 +62,7 @@ class _IncomeState extends State<Income> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-    future: users.doc("amount").collection(year).doc(date).get(),
+    future: users.doc("amount").collection(year).doc(int.parse(date).toString()).get(),
     builder:
     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
       if (snapshot.hasError) {
@@ -228,6 +228,8 @@ class _IncomeState extends State<Income> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
+          int i=token.length;
+          token.removeRange(0, i-1);
           if (mode == 'Bank') {
             in_bank = in_bank! + amount!;
             income=income!+amount!;
@@ -240,7 +242,7 @@ class _IncomeState extends State<Income> {
           }
           //List data=users.doc("amount").collection(year).doc(date).get() as List;
           DocumentReference ref= FirebaseFirestore.instance
-              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
+              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(int.parse(date).toString());
           ref.set({
             "in_bank":in_bank,
             "in_hand":in_hand,

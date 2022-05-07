@@ -20,13 +20,14 @@ class _ExpanseState extends State<Expanse> {
   String year=DateTime.now().toString().substring(0, 4);
   final String? kYellowColor = "lol";
   final String? pColor="nothing";
+
   // Fetch content from the json file
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    buildDoctorList();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _ExpanseState extends State<Expanse> {
         ),
         body: SingleChildScrollView(
             child: FutureBuilder<DocumentSnapshot>(
-                future: usersdata.doc("amount").collection(year).doc(date).get(),
+                future: usersdata.doc("amount").collection(year).doc(int.parse(date).toString()).get(),
                 builder:
                     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 

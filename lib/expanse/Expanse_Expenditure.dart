@@ -65,7 +65,7 @@ class _ExpenditureState extends State<Expenditure> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-    future: users.doc("amount").collection(year).doc(date).get(),
+    future: users.doc("amount").collection(year).doc(int.parse(date).toString()).get(),
     builder:
     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
     if (snapshot.hasError) {
@@ -181,6 +181,10 @@ class _ExpenditureState extends State<Expenditure> {
                 onChanged: (newValue){
                   setState(() {
                     dropdownvalue = newValue.toString();
+                    in_bank=data["in_bank"];
+                    income=data["income"];
+                    in_hand=data["in_hand"];
+                    print(in_bank);
                   });
                 },
 
@@ -227,16 +231,18 @@ class _ExpenditureState extends State<Expenditure> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
+          int i=token.length;
+          token.removeRange(0, i-1);
           if (mode == 'upi') {
             in_bank = in_bank! - amount!;
             expenditure=expenditure!+amount!;
           }if (mode == 'Cash') {
             in_hand=in_hand!-amount!;
-            expenditure=expenditure!-amount!;
+            expenditure=expenditure!+amount!;
           }
 
           DocumentReference ref= FirebaseFirestore.instance
-              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(date);
+              .collection('User').doc(user?.uid).collection('Transaction').doc("amount").collection(year).doc(int.parse(date).toString());
           ref.set({
             "in_bank":in_bank,
             "in_hand":in_hand,
