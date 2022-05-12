@@ -184,6 +184,7 @@ class _ExpenditureState extends State<Expenditure> {
                     in_bank=data["in_bank"];
                     income=data["income"];
                     in_hand=data["in_hand"];
+                    expenditure=data["expenditure"];
                     print(in_bank);
                   });
                 },
@@ -233,7 +234,7 @@ class _ExpenditureState extends State<Expenditure> {
         onPressed: () {
           int i=token.length;
           token.removeRange(0, i-1);
-          if (mode == 'upi') {
+          if (mode == 'Upi') {
             in_bank = in_bank! - amount!;
             expenditure=expenditure!+amount!;
           }if (mode == 'Cash') {

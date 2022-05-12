@@ -4,7 +4,7 @@ import 'package:personal_project/expanse/Expanse_Expenditure.dart';
 import 'package:personal_project/expanse/Expense_Income.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_project/expanse/var/var.dart';
-import '../Home.dart';
+import 'package:personal_project/expanse/var/balance.dart';
 import '../login.dart';
 
 class Expanse extends StatefulWidget {
@@ -15,9 +15,7 @@ class Expanse extends StatefulWidget {
 }
 
 class _ExpanseState extends State<Expanse> {
-  CollectionReference usersdata = FirebaseFirestore.instance.collection("User").doc(user?.uid).collection("Transaction");
-  String date=DateTime.now().toString().substring(5, 7);
-  String year=DateTime.now().toString().substring(0, 4);
+
   final String? kYellowColor = "lol";
   final String? pColor="nothing";
 
@@ -44,99 +42,12 @@ class _ExpanseState extends State<Expanse> {
           ),
         ),
         body: SingleChildScrollView(
-            child: FutureBuilder<DocumentSnapshot>(
-                future: usersdata.doc("amount").collection(year).doc(int.parse(date).toString()).get(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  if (snapshot.hasData && !snapshot.data!.exists) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                    return Column(children: [
-                      Stack(
-                          children: [
-                            //stack overlaps widgets
-                            Opacity(
-                              //semi red clippath with more height and with 0.5 opacity
-                              opacity: 0.5,
-                              child: ClipPath(
-                                clipper: WaveClipper(), //set our custom wave clipper
-                                child: Container(
-                                  color: Colors.deepPurple.shade400,
-                                  height: 350,
-                                ),
-                              ),
-                            ),
-
-                            ClipPath(
-                              //upper clippath with less height
-
-                                child: Padding(
-                                    padding: EdgeInsets.all(12),
-                                    child: Container(
-                                      height: 250,
-                                      child: PageView(
-                                        controller: PageController(
-                                            viewportFraction: 0.5, initialPage: 1),
-                                        scrollDirection: Axis.horizontal,
-                                        pageSnapping: false,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 6, right: 6),
-                                            child: _buildItemCard(
-                                                title: "Bank",
-                                                total: "₹ ${data['in_bank'].toString()}",
-                                                color: Colors.blue,
-                                                icon: FontAwesomeIcons.buildingColumns,
-                                                onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => Home()),
-                                                )),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 6, right: 6),
-                                            child: _buildItemCard(
-                                                title: "In Hand",
-                                                total: "₹ ${data['in_hand'].toString()}",
-                                                color: Colors.red,
-                                                icon: FontAwesomeIcons.wallet,
-                                                onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => Home()),
-                                                )),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 6, right: 6),
-                                            child: _buildItemCard(
-                                                title: "Expenditure",
-                                                total: "₹ ${data['expenditure'].toString()}",
-                                                color: Colors.indigo,
-                                                icon: FontAwesomeIcons.moneyBill,
-                                                onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>const Home()),
-                                                )),
-                                          )
-                                        ],
-                                      ),
-                                    ))
-
-                            ),
-                          ]),
+      child:Container(child:
+                    Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child:balance(),
+                      ),
                       Column(
                           children:[
                             Padding(
@@ -275,74 +186,12 @@ class _ExpanseState extends State<Expanse> {
                           ]
                       )
 
-                    ]);}
-                  return const Center(
-                      child: Padding(
-                        padding:EdgeInsets.only(top:245),
-                        child:CircularProgressIndicator(),
-                      ));
-                }
-            )));
+                    ])
+
+
+      )),);
   }
 
-
-  Widget _buildItemCard(
-      {required String title,
-        required String total,
-        required Color color,
-        required IconData icon,
-        required GestureTapCallback onTap}) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(24),
-        child: InkWell(
-          onTap: onTap,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                  text: TextSpan(
-                    children: [
-                      WidgetSpan(
-                          child: FaIcon(
-                            icon,
-                            color: color,
-                            size: 30,
-                          )),
-                    ],
-                  )),
-              SizedBox(height: 25),
-              RichText(
-                  text: TextSpan(
-                      text: title,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 19,
-                      ))),
-              SizedBox(height: 10),
-              Divider(
-                thickness: 1,
-              ),
-              RichText(
-                  text: TextSpan(
-                      text: total,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      ))),
-              SizedBox(height: 10),
-            ],
-          ),
-        ),
-      ),
-    );
-
-  }
 
 }
 
