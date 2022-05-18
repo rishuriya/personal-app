@@ -237,6 +237,7 @@ class _ExpenditureState extends State<Expenditure> {
           if(i!=0) {
             token.removeRange(0, i - 1);
           }
+
           if (mode == 'Upi') {
             in_bank = in_bank! - amount!;
             expenditure=expenditure!+amount!;

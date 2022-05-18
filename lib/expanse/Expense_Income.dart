@@ -76,7 +76,6 @@ class _IncomeState extends State<Income> {
           child: CircularProgressIndicator(),
         );
       }
-
       if (snapshot.connectionState == ConnectionState.done) {
         Map<String, dynamic> data = snapshot.data!.data() as Map<String,
             dynamic>;

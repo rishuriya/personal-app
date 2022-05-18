@@ -55,6 +55,7 @@ buildDoctorList() {
                 ),
                 const SizedBox(height: 80),
               ],
+
             )
         );
       });

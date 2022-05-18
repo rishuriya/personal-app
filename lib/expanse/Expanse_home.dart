@@ -43,6 +43,7 @@ class _ExpanseState extends State<Expanse> {
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
+
         body: SingleChildScrollView(
             child: StreamBuilder<DocumentSnapshot>(
                 stream: usersdata.doc("amount").collection(year).doc(int.parse(date).toString()).snapshots(),
