@@ -10,13 +10,12 @@ int? expenditure =0;
 List<Expense> token = [Expense( 0,"", " ","","","RECENT TRANSACTIONS")];
 buildDoctorList() {
   String? uid=user?.uid;
-  return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('User').doc(uid).collection('Transaction').orderBy("Day",descending: true).snapshots(),
+  return FutureBuilder<QuerySnapshot>(
+      future: FirebaseFirestore.instance.collection('User').doc(uid).collection('Transaction').orderBy("Day",descending: true).get(),
       builder: (context, snapshot) {
         if(snapshot.data != null){
           for (var element in snapshot.data!.docs) {
             try{
-              print("hello");
               token.add(Expense(element['Amount'],element['Day'], element['Mode'],
                   element['Remark'],element['Source'], element['type']));
             }catch (e){
@@ -24,6 +23,7 @@ buildDoctorList() {
             }
           }
           token.removeAt(0);
+          print(token.length);
         }
 
         return  Padding(

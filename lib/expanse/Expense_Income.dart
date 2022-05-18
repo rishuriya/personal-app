@@ -182,6 +182,7 @@ class _IncomeState extends State<Income> {
                     in_bank=data["in_bank"];
                     income=data["income"];
                     in_hand=data["in_hand"];
+                    expenditure=data["expenditure"];
                     print(in_bank);
                   });
                 },
@@ -229,7 +230,10 @@ class _IncomeState extends State<Income> {
         backgroundColor: Colors.deepPurpleAccent,
         onPressed: () {
           int i=token.length;
-          token.removeRange(0, i-1);
+          print(i);
+          if(i!=0) {
+            token.removeRange(0, i - 1);
+          }
           if (mode == 'Bank') {
             in_bank = in_bank! + amount!;
             income=income!+amount!;

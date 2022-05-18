@@ -44,8 +44,8 @@ class _ExpanseState extends State<Expanse> {
           ),
         ),
         body: SingleChildScrollView(
-            child: FutureBuilder<DocumentSnapshot>(
-                future: usersdata.doc("amount").collection(year).doc(int.parse(date).toString()).get(),
+            child: StreamBuilder<DocumentSnapshot>(
+                stream: usersdata.doc("amount").collection(year).doc(int.parse(date).toString()).snapshots(),
                 builder:
                     (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
@@ -61,7 +61,7 @@ class _ExpanseState extends State<Expanse> {
                     );
                   }
 
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
                     Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return Column(children: [
                       Stack(
