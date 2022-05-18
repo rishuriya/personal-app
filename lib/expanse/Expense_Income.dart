@@ -259,6 +259,7 @@ class _IncomeState extends State<Income> {
             DocumentReference ref = FirebaseFirestore.instance
                 .collection('User').doc(uid).collection('Transaction').doc(id);
             ref.set({
+              "id":DateTime.now(),
               'Day': id.substring(0, 10),
               'Source': dropdownvalue,
               'Amount': amount,
