@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_project/Home.dart';
 import 'package:personal_project/expanse/Expanse_home.dart';
 
 import 'login.dart';
@@ -27,7 +28,7 @@ class _SplashState extends State<Splash> {
       //  goto MainPage(mainUser:_tempUser);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const Expanse(),
+          builder: (context) => const Home(),
         ),
       );
     }else {
